@@ -13,3 +13,4 @@ class AccountCreationTest(TestCase):
 
         self.assertEqual(response.status_code,HTTPStatus.OK)
         self.assertTemplateUsed('accounts/register.html')
+        self.assertContains(response, "Create your account Today")
