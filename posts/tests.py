@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.test import TestCase
 from model_bakery import baker
 
@@ -57,19 +57,24 @@ class DetailPageTest(TestCase):
         self.assertContains(response, self.post.body)
 
 class PostAuthorTest(TestCase):
-      def setup(self) -> None:
-        self.user = baker.make(User)
-        self.post = Post.objects.create(
-          author=self.user
-        )
+    #def setup(self) -> None:
+    #    self.user = baker.make(User)
+    #   self.post = Post.objects.create(
+    #    author=self.user
+    #    )
     
     # Create a user
     # def setUp(self):
         ## self.post = Post.objects.create(title='Test Post', author=self.user, body='Test Body')
+    
+    def setUp(self):
+        self.user = User.objects.create(username='testuser', password='testpassword')
+        self.post = Post.objects.create(title='Test Post', body='Test Body', author=self.user)
 
-      def test_author_is_instance_of_user_model(self):
+
+    def test_author_is_instance_of_user_model(self):
         self.assertTrue(isinstance(self.user, User))
     
-      def test_post_belongs_to_user(self):
+    def test_post_belongs_to_user(self):
         self.assertTrue(hasattr(self.post, 'author'))
         self.assertEqual(self.post.author, self.user)
